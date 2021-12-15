@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写防抖函数</title>
+</head>
+<body>
+    <button id="btn">你点我试试</button>
+    <script>
+        let btn = document.getElementById('btn');
+        function foo() {
+            // 输出当前时间
+            console.log(new Date().toLocaleTimeString('cn',{hour12:false}))
+        }
+        // 防抖之前
+        // btn.addEventListener('click', foo);
+
+        // 函数 debounce 化
+        function debounce(fn, delay) {
+            let timer = null;   // 通过闭包保存一个标记
+            return function() {
+                // 因为还没到规定时间又触发了，所以把之前的定时器取消，重新计时
+
+                clearTimeout(timer); 
+
+                timer = setTimeout(() => {
+                    // 如果不用箭头函数的话，this 就指向全局对象了
+                    fn.apply(this, arguments);
+                }, delay);
+            }
+        }
+
+        // 防抖之后
+        let delay = 2000;  // 设置时间间隔，在这个时间间隔内再次被触发会重新计时
+        btn.addEventListener('click', debounce(foo, delay));
+    </script>
+</body>
+</html>
