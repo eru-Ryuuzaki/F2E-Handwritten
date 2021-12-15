@@ -19,7 +19,7 @@
         // 节流之前
         // btn.addEventListener('click', foo);
 
-        // 函数 throttle 化
+        // 函数 throttle 化(除了这种方式，还可以利用时间戳来判断进行实现)
         function throttle(fn, delay) {
             let valid = true;   // 通过闭包保存一个标记
             return function() {
