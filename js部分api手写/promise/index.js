@@ -13,18 +13,58 @@
 
 const MyPromise = require("./myPromise");
 
+// 执行器里面的内容会立即执行
 let promise = new MyPromise((resolve, reject) => {
+  // 这版本的 promise 如果是异步结果的话，是不能连续链式调用 then 的
+
+  // setTimeout(() => {
+  //   resolve("成功");
+  // }, 2000);
+  // throw new Error("executor error");
   resolve("成功");
   // 原来并没有直接停止函数
-  console.log("状态改变之后还是执行了");
+  // console.log("状态改变之后还是执行了");
+  // setTimeout(() => {
   //   reject("失败");
+  // }, 2000);
 });
 
-promise.then(
-  (value) => {
+// promise.then(
+//   (value) => {
+//     console.log(value);
+//   },
+//   (reason) => {
+//     console.log(reason);
+//   }
+// );
+
+// promise.then(
+//   (value) => {
+//     console.log(value);
+//   },
+//   (reason) => {
+//     console.log(reason);
+//   }
+// );
+
+function other() {
+  return new MyPromise((resolve, reject) => {
+    resolve("other");
+  });
+}
+
+promise
+  .then(
+    (value) => {
+      console.log(value);
+      return other();
+    },
+    (reason) => {
+      console.log(reason);
+    }
+  )
+  .then((value) => {
     console.log(value);
-  },
-  (reason) => {
-    console.log(reason);
-  }
-);
+  });
+
+// console.log("同步代码");
