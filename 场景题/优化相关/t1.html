@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优化 t1</title>
+</head>
+<body>
+    <script>
+        function addElementDiv(num = 1) {
+            for (let i = 1; i <= num; i++) {
+                const div = document.createElement("div");
+                div.setAttribute("id", i);
+                div.setAttribute('style', 'text-align: center');
+                div.innerHTML = "结点" + i;
+                div.onclick = function() {
+                    let node = document.getElementById(i)
+                    // document.body.removeChild(node);
+                    // console.log("移除了第 " + i + " 个结点");
+                    node.setAttribute('style', 'display: none')
+                    console.log("隐藏了第 " + i + " 个结点");
+                }
+                document.body.append(div);
+            }
+        }
+        // document.body.append(addElementDiv(10));
+        // addElementDiv(100000);
+        // setTimeout(function test() {
+        //     let node = document.getElementById(5);
+        //     node.click();
+        // }, 5000);
+    </script>
+</body>
+</html>

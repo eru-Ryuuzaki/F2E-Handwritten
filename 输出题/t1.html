@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1</title>
+</head>
+
+<body>
+    <div id="i">t1</div>
+    <script>
+        // 考察事件捕获和事件冒泡 Key1 key2 key4 key3
+        document.body.addEventListener("mousedown", () => {
+            console.log("key1")
+        }, true)
+
+        document.getElementById("i").addEventListener("mousedown", () => {
+            console.log("key2")
+        }, true)
+
+        document.body.addEventListener("mousedown", () => {
+            console.log("key3")
+        }, false)
+
+        document.getElementById("i").addEventListener("mousedown", () => {
+            console.log("key4")
+        }, false)
+    </script>
+</body>
+
+</html>
