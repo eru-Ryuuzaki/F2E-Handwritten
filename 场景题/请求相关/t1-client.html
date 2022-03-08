@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function fetchData() {
+        // node 中没有实现 fetch，故换成在浏览器跑
+        return new Promise((resolve, reject) => {
+          fetch("http://localhost:9999/")
+            .then(function (response) {
+              if (!/^(2|3)\d{2}$/.test(response.status)) {
+                return Promise.reject(response);
+              }
+              return response.json();
+            })
+            .then(function (res) {
+              const data = res ?? [];
+              const arr = data.filter((item) => {
+                const time1 = new Date("2021-12-03");
+                const time2 = new Date(item.time);
+                return time2 > time1 && item.score > 90;
+              });
+              // console.log(arr);
+              resolve(arr);
+            })
+            .catch((err) => {
+              console.log("请求失败了~");
+              reject();
+            });
+        });
+      }
+      // 可以控制一下递归层数，不然要是一直请求不到的话就寄了！
+      function solution(requestStuCount, MAXQUEUE) {
+        let result = [];
+        return new Promise((resolve, reject) => {
+          function tryFetch() {
+            fetchData().then(
+              (res) => {
+                if (result.length < requestStuCount) {
+                  result.push(...res);
+                  if (result.length >= requestStuCount) {
+                    resolve(
+                      result
+                        .slice(0, requestStuCount)
+                        .sort((a, b) => b.score - a.score)
+                    );
+                  } else {
+                    tryFetch();
+                  }
+                }
+              },
+              (err) => {
+                tryFetch();
+              }
+            );
+          }
+          for (let i = 0; i < MAXQUEUE; i++) tryFetch();
+        });
+      }
+      async function fetchStudents() {
+        let result = []; // 存储数据
+        let MAXQUEUE = 6; // 浏览器最大请求数
+        let requestStuCount = 20;
+        console.log("开始请求");
+        result = await solution(requestStuCount, MAXQUEUE);
+        console.log(
+          `请求总数为：${result.length}, 请求结果为：${JSON.stringify(result)}`
+        );
+      }
+      fetchStudents();
+    </script>
+  </body>
+</html>
