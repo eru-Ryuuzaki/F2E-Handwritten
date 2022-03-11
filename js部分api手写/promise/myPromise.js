@@ -31,7 +31,7 @@ class MyPromise {
     // 如果成功回调存在那么就调用
     // this.successCallback && this.successCallback(this.value);
     while (this.successCallback.length) {
-      this.successCallback.shift()(this.value);
+      this.successCallback.shift()();
     }
   };
   reject = (reason) => {
@@ -41,31 +41,87 @@ class MyPromise {
     this.reason = reason;
     // this.failCallback && this.failCallback(this.reason);
     while (this.failCallback.length) {
-      this.failCallback.shift()(this.reason);
+      this.failCallback.shift()();
     }
   };
   then(successCallback, failCallback) {
+    successCallback = successCallback ? successCallback : (value) => value;
+    failCallback = failCallback
+      ? failCallback
+      : (reason) => {
+          throw reason;
+        };
     let promise2 = new MyPromise((resolve, reject) => {
       if (this.status === FULFILLED) {
-        let x = successCallback(this.value);
-        // 判断 x 的值是普通值还是 promise 对象
-        // 如果是普通值 直接调用 resolve
-        // 如果是 promise 对象 查看promise 对象返回的结果
-        // 再根据 promise 对象返回的结果 决定调用 resolve还是 reject
-        resolvePromise(x, resolve, reject); // 用来解析 x 值的
+        // 改成 setTimeout 是为了变成异步，让 resolvePromise 能获取到 promise2
+        setTimeout(() => {
+          try {
+            let x = successCallback(this.value);
+            // 判断 x 的值是普通值还是 promise 对象
+            // 如果是普通值 直接调用 resolve
+            // 如果是 promise 对象 查看promise 对象返回的结果
+            // 再根据 promise 对象返回的结果 决定调用 resolve还是 reject
+            resolvePromise(promise2, x, resolve, reject); // 用来解析 x 值的
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       } else if (this.status === REJECTED) {
-        failCallback(this.reason);
+        setTimeout(() => {
+          try {
+            let x = failCallback(this.reason);
+            // 判断 x 的值是普通值还是 promise 对象
+            // 如果是普通值 直接调用 resolve
+            // 如果是 promise 对象 查看promise 对象返回的结果
+            // 再根据 promise 对象返回的结果 决定调用 resolve还是 reject
+            resolvePromise(promise2, x, resolve, reject); // 用来解析 x 值的
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       } else {
         // 将成功回调和失败回调存放到数组中
-        this.successCallback.push(successCallback);
-        this.failCallback.push(failCallback);
+        // 这里不理解
+        this.successCallback.push(() => {
+          setTimeout(() => {
+            try {
+              let x = successCallback(this.value);
+              // 判断 x 的值是普通值还是 promise 对象
+              // 如果是普通值 直接调用 resolve
+              // 如果是 promise 对象 查看promise 对象返回的结果
+              // 再根据 promise 对象返回的结果 决定调用 resolve还是 reject
+              resolvePromise(promise2, x, resolve, reject); // 用来解析 x 值的
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
+        });
+        this.failCallback.push(() => {
+          setTimeout(() => {
+            try {
+              let x = failCallback(this.reason);
+              // 判断 x 的值是普通值还是 promise 对象
+              // 如果是普通值 直接调用 resolve
+              // 如果是 promise 对象 查看promise 对象返回的结果
+              // 再根据 promise 对象返回的结果 决定调用 resolve还是 reject
+              resolvePromise(promise2, x, resolve, reject); // 用来解析 x 值的
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
+        });
       }
     });
     return promise2;
   }
 }
 
-function resolvePromise(x, resolve, reject) {
+function resolvePromise(promise2, x, resolve, reject) {
+  if (promise2 === x) {
+    return reject(
+      new TypeError("Chaining cycle detected for promise #<Promise>")
+    );
+  }
   if (x instanceof MyPromise) {
     // x.then(() => resolve(value), reason => reject(reason))
     x.then(resolve, reject);

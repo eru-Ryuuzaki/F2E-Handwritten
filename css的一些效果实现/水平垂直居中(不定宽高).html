@@ -1,0 +1,106 @@
+<!-- 一、内联元素居中布局
+
+水平居中
+
+
+行内元素可设置：text-align: center;
+flex布局设置父元素：display: flex; justify-content: center;
+
+
+垂直居中
+
+
+单行文本父元素确认高度：height === line-height
+多行文本父元素确认高度：disaply: table-cell; vertical-align: middle;
+
+二、块级元素居中布局
+
+水平居中
+
+
+定宽: margin: 0 auto;
+不定宽： 参考上诉例子中不定宽高例子。
+
+
+垂直居中
+
+
+position: absolute设置left、top、margin-left、margin-to(定高)；
+position: fixed设置margin: auto(定高)；
+display: table-cell；
+transform: translate(x, y)；
+flex(不定高，不定宽)；
+grid(不定高，不定宽)，兼容性相对比较差； -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 基础样式 */
+      .box {
+        background-color: red;
+        height: 300px;
+        width: 400px;
+      }
+      .content {
+        background-color: blue;
+      }
+      /* 方式一 绝对定位 + transform */
+      /* .box {
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      } */
+      /* 方式二 table-cell */
+      /* .box {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .content {
+        display: inline-block;
+      } */
+      /* 方式三 flex 布局 */
+      .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      /* 方式四 flex 变异布局 */
+      /* .box {
+        display: flex;
+      }
+      .content {
+        margin: auto;
+      } */
+      /* 方式五 grid */
+      /* .box {
+        display: grid;
+      }
+      .content {
+        align-self: center;
+        justify-self: center;
+      } */
+      /* 方式六 grid + margin */
+      /* .box {
+        display: grid;
+      }
+      .content {
+        margin: auto;
+      } */
+      /* 方式七 writing-mode属性布局 听都没听说过的、而且看起来也不好用，就先不写了 */
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="content">不定宽高那就只能用内容撑起来了</div>
+    </div>
+  </body>
+</html>

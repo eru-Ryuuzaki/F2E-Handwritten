@@ -21,22 +21,45 @@ let promise = new MyPromise((resolve, reject) => {
   //   resolve("成功");
   // }, 2000);
   // throw new Error("executor error");
-  resolve("成功");
+  // resolve("成功");
+  reject("失败");
   // 原来并没有直接停止函数
   // console.log("状态改变之后还是执行了");
   // setTimeout(() => {
   //   reject("失败");
   // }, 2000);
 });
-
-// promise.then(
-//   (value) => {
-//     console.log(value);
-//   },
-//   (reason) => {
-//     console.log(reason);
-//   }
-// );
+promise
+  .then()
+  .then()
+  .then(
+    (res) => {
+      console.log(res);
+    },
+    (reason) => {
+      console.log(`失败了~ ${reason}`);
+    }
+  );
+// promise
+//   .then(
+//     (value) => {
+//       console.log(value);
+//       return "aaa";
+//       // throw new Error("then error");
+//     },
+//     (reason) => {
+//       console.log(reason.message);
+//       return 10000;
+//     }
+//   )
+//   .then(
+//     (value) => {
+//       console.log(value);
+//     },
+//     (reason) => {
+//       console.log(reason.message);
+//     }
+//   );
 
 // promise.then(
 //   (value) => {
@@ -53,18 +76,31 @@ function other() {
   });
 }
 
-promise
-  .then(
-    (value) => {
-      console.log(value);
-      return other();
-    },
-    (reason) => {
-      console.log(reason);
-    }
-  )
-  .then((value) => {
-    console.log(value);
-  });
+// promise
+//   .then(
+//     (value) => {
+//       console.log(value);
+//       return other();
+//     },
+//     (reason) => {
+//       console.log(reason);
+//     }
+//   )
+//   .then((value) => {
+//     console.log(value);
+//   });
 
 // console.log("同步代码");
+// let p1 = promise.then((value) => {
+//   console.log(value);
+//   return p1;
+// });
+
+// p1.then(
+//   (value) => {
+//     console.log(value);
+//   },
+//   (reason) => {
+//     console.log(reason.message);
+//   }
+// );

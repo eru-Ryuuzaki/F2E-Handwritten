@@ -1,0 +1,122 @@
+<!-- 一、内联元素居中布局
+
+水平居中
+
+
+行内元素可设置：text-align: center;
+flex布局设置父元素：display: flex; justify-content: center;
+
+
+垂直居中
+
+
+单行文本父元素确认高度：height === line-height
+多行文本父元素确认高度：disaply: table-cell; vertical-align: middle;
+
+二、块级元素居中布局
+
+水平居中
+
+
+定宽: margin: 0 auto;
+不定宽： 参考上诉例子中不定宽高例子。
+
+
+垂直居中
+
+
+position: absolute设置left、top、margin-left、margin-to(定高)；
+position: fixed设置margin: auto(定高)；
+display: table-cell；
+transform: translate(x, y)；
+flex(不定高，不定宽)；
+grid(不定高，不定宽)，兼容性相对比较差； -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 基础样式 */
+      .box {
+        background-color: red;
+        height: 300px;
+        width: 400px;
+      }
+      .content {
+        background-color: blue;
+        height: 100px;
+        width: 100px;
+      }
+      /* 方式一 绝对定位 + 负margin值*/
+      /* 子绝父相 */
+      /* 宽度的一半 */
+      /* 高度的一半 */
+      /* .box {
+        position: relative; 
+      }
+      .content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -50px; 
+        margin-top: -50px; 
+      } */
+      /* 方式二 绝对定位 + transform */
+      /* .box {
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      } */
+      /* 方式三 绝对定位 + left/right/bottom/top + margin */
+      /* .box {
+        position: relative;
+      }
+      .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      } */
+      /* 方式四 flex布局 */
+      /* .box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      } */
+      /* 方式五 grid布局 */
+      /* .box {
+        display: grid;
+      }
+      .content {
+        margin: auto;
+      } */
+      /* 方式六 table-cell + vertical-align + inline-block/margin: auto  （之前都没接触过的方式~）*/
+      /* 子元素也可以设置成 margin: auto; */
+      /* 子元素设置成 display: inline; 就消失了！神奇！ (行内元素设置高度和宽度是不生效的)*/
+      /* 不设置子元素的话，虽然 div 定宽高了，但是一样占整行（其他部分由 margin 填充） */
+      /* text-align: center; 这个属性也牛逼啊！设置  display: inline-block 之后就有好多很神奇的东西了 */
+      .box {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .content {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="content"></div>
+    </div>
+  </body>
+</html>

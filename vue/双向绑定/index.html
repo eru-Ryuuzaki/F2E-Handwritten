@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      {{str}}
+      <!-- <div>{{str}}</div> -->
+      <h1>{{name}}</h1>
+      <!-- 这种情况还没处理 -->
+      <h2>{{花括号}}</h2>
+
+      <button @click="bth">按钮</button>
+      <input type="text" v-model="name" />
+    </div>
+    <script type="text/javascript" src="myVue.js"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script> -->
+    <script>
+      new myVue({
+        el: "#app",
+        data: {
+          str: "eru",
+          name: "Camille",
+        },
+        methods: {
+          bth(e) {
+            console.log("点击按钮", this.name);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

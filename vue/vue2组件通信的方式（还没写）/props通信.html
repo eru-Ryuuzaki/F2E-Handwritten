@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <App></App>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script>
+      const App = {
+        data() {
+          return {
+            msg: "eru Ryuuzaki",
+          };
+        },
+        methods: {},
+        template: `<div>我是一个组件 {{msg}}</div>`,
+      };
+      const vn = new Vue({
+        el: "#app",
+        data: {},
+        template: `<div>
+                <App />
+            </div>`,
+        components: {
+          App,
+        },
+      });
+    </script>
+  </body>
+</html>
