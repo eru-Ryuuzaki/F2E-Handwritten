@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>root-parent-children</h1>
+      <Son></Son>
+      <h3>{{msg2}}</h3>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+    <script>
+      Vue.component("Son", {
+        template: `
+          <template id="son">
+            <div>
+                <h3> 这里是son组件 </h3>
+                <button> {{$parent.msg}} </button>
+            </div>
+          </template>
+          `,
+        data() {
+          return {
+            msg: "子组件的值",
+          };
+        },
+        methods: {},
+      });
+      new Vue({
+        el: "#app",
+        data: {
+          msg: "父组件的值",
+          msg2: "",
+        },
+        methods: {},
+        mounted() {
+          console.log("父组件打印子组件实例：", this.$children);
+          for (let v of this.$children) {
+            console.log("子组件信息", v.msg);
+          }
+          console.log(this.$children[0].msg);
+          this.msg2 = this.$children[0].msg;
+        },
+      });
+    </script>
+  </body>
+</html>

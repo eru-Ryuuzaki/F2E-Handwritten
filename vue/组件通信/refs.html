@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>refs 组件通信</h1>
+      <Son ref="child" />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+    <script>
+      Vue.component("Son", {
+        template: `
+          <template id="son">
+            <div>
+                <h3> 这里是son组件 </h3>
+                <button> 哈哈哈 </button>
+            </div>
+          </template>
+          `,
+        data() {
+          return {
+            childMsg: "这是子组件的值",
+          };
+        },
+        methods: {},
+      });
+      new Vue({
+        el: "#app",
+        data: {},
+        mounted() {
+          alert(this.$refs["child"].childMsg);
+        },
+        methods: {},
+      });
+    </script>
+  </body>
+</html>

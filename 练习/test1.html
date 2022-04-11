@@ -6,39 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 500px;
-        background-color: red;
+      .c1 {
+        margin-right: 100px;
       }
-      .test {
-        width: 300px;
-        height: 300px;
-        /* display: flex; */
-        background-color: blue;
-        /* align-items: center; */
-        /* justify-content: center; */
-        overflow: auto;
+      .c2 {
+        margin-left: -150px;
       }
     </style>
   </head>
   <body>
     <div class="content">
-      <button id="add">点击添加div</button>
-      <div class="test" id="test"></div>
+      <span class="c1">hhhh</span>
+      <span class="c2">aaaa</span>
     </div>
-    <script>
-      let node = document.getElementById("add");
-      node.addEventListener("click", () => {
-        let test = document.getElementById("test");
-        const div = document.createElement("div");
-        div.setAttribute("style", "text-align: center; background-color: yellow; margin: 5px 0");
-        div.innerHTML = "对话";
-        test.append(div);
-      });
-    </script>
+    <script></script>
   </body>
 </html>

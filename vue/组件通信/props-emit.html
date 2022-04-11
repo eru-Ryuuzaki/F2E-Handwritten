@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>props $emit 组件通信</h1>
+      <Son :money="money" @sonclick="showSonTips" />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+    <script>
+      Vue.component("Son", {
+        template: `
+          <template id="son">
+            <div>
+                <h3> 这里是son组件 </h3>
+                <button @click="handleClick"> {{money}} </button>
+            </div>
+          </template>
+          `,
+        props: ["money"],
+        methods: {
+          handleClick() {
+            // $emit传入的事件名称只能使用小写，不能使用大写的驼峰规则命名
+            this.$emit("sonclick", "这是子组件触发事件然后传过来的信息");
+          },
+        },
+      });
+      new Vue({
+        el: "#app",
+        data: {
+          money: "这是父组件传过来的 100 块钱",
+        },
+        methods: {
+          showSonTips(msg) {
+            alert(msg);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

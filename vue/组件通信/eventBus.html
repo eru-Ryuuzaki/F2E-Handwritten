@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>eventBus 组件通信</h1>
+      <Son />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+    <script>
+      class Bus {
+        constructor() {
+          this.handlers = [];
+        }
+
+        // 注册事件
+        on(type, handler, once = false) {
+          let that = this;
+          let _handler = handler;
+          if (once) {
+            console.log("once");
+            handler = function (...args) {
+              _handler.apply(that, args);
+              that.remove(type, handler);
+            };
+          }
+          if (!this.handlers[type]) {
+            this.handlers[type] = [];
+          }
+          this.handlers[type].push(handler);
+        }
+
+        // 触发事件
+        emit(type, ...params) {
+          if (!this.handlers[type]) {
+            return new Error("事件错误");
+          }
+          this.handlers[type].forEach((handler) => handler(...params));
+        }
+
+        remove(type, handler) {
+          if (!this.handlers[type]) {
+            return new Error(事件不存在);
+          }
+          if (!handler) {
+            delete this.handlers[type];
+          } else {
+            let idx = this.handlers[type].indexOf(handler);
+            if (idx !== -1) {
+              this.handlers[type].splice(idx, 1);
+            }
+            if (this.handlers[type].length === 0) {
+              delete this.handlers[type];
+            }
+          }
+        }
+      }
+
+      Vue.prototype.$bus = new Bus();
+
+      Vue.component("Son", {
+        template: `
+          <template id="son">
+            <div>
+                <h3> 这里是son组件 </h3>
+                <button @click="handleClick"> {{value}} </button>
+            </div>
+          </template>
+          `,
+        data() {
+          return {
+            value: "默认值",
+            msg1: "这是子组件传过来的值",
+            msg2: "哈哈哈",
+          };
+        },
+        methods: {
+          handleClick() {
+            this.$bus.emit("event1", this.msg1, this.msg2);
+          },
+        },
+      });
+      new Vue({
+        el: "#app",
+        data: {},
+        mounted() {
+          this.$bus.on("event1", this.showMsg);
+          this.$bus.on("event1", this.showMsgOnce, true);
+        },
+        methods: {
+          showMsg(...msg) {
+            alert(msg);
+          },
+          showMsgOnce(...msg) {
+            alert(msg);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

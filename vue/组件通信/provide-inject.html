@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>refs 组件通信</h1>
+      <div>这是父组件的值 {{msg}}</div>
+      <Son />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+    <script>
+      // provide - reject 这种方式适合跨组件传输
+      Vue.component("Son", {
+        template: `
+          <template id="son">
+            <div>
+                <h3> 这里是son组件 </h3>
+                <grandson></grandson>
+            </div>
+          </template>
+          `,
+        data() {
+          return {
+            childMsg: "这是子组件的值",
+          };
+        },
+        methods: {},
+      });
+      Vue.component("grandson", {
+        inject: ["that"],
+        template: `
+          <template id="grandson">
+            <div>
+                <h3> 这是 grandson 组件 </h3>
+                <button> {{that.msg}} </button>
+            </div>
+          </template>
+          `,
+        data() {
+          return {};
+        },
+        methods: {},
+        mounted() {
+          setTimeout(() => {
+            this.that.msg = "后代组件的值改变咯，祖先的也跟着改吧~";
+            // console.log()
+          }, 10000);
+        },
+      });
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            msg: "这是父组件传给孩子的孩子的值",
+          };
+        },
+        mounted() {
+          setTimeout(() => {
+            this.msg = "父组件的值改变咯，后代的也跟着改吧~";
+            console.log(this.msg);
+          }, 5000);
+        },
+        methods: {},
+        // 1.对象的形式
+        //     provide: {
+        //         foo: "123"
+        //     },
+
+        // 这样书写很便捷，但有个弊端，就是传递的值只能是静态的，并且获取不到this，例如data、methods、computed里的都是获取不到的，这时我们就可以用另一种写法
+        // 2：工厂函数返回对象：
+        // provide() {
+        //     return {
+        //     foo: this.bar//data中的值
+        //     brz: this.getSomeVal //methods中的方法
+        //     }
+
+        // 这种写法我们就可以传递this中的任意值。
+        provide() {
+          return {
+            // 传个this下去
+            // msg: this.msg,
+            that: this,
+          };
+        },
+      });
+    </script>
+  </body>
+</html>

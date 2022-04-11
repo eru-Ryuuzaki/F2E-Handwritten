@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>props $emit 组件通信</h1>
+      <Son :money="money" :age="age" @sonclick="showSonTips" />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script>
+      // attrs 可以不用 props 来接收，直接用这个来访问
+      //   $listeners 包含了作用在这个组件上所有的监听器，即父组件绑定的全部监听事件，通过 v-on="$listeners"，可以将这些事件绑定给它自己的子组件。
+      Vue.component("Son", {
+        template: `
+          <template id="son">
+            <div>
+                <h3> 这里是son组件 </h3>
+                <button> {{money}} </button>
+                <button> {{$attrs.age}} </button>
+            </div>
+          </template>
+          `,
+        props: ["money"],
+        methods: {
+          handleClick() {
+            this.$emit("sonclick", "这是子组件触发事件然后传过来的信息");
+          },
+        },
+      });
+      new Vue({
+        el: "#app",
+        data: {
+          money: "这是父组件传过来的 100 块钱",
+          age: "永远18岁",
+        },
+        methods: {
+          showSonTips(msg) {
+            alert(msg);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
