@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      setTimeout(function () {
+        console.log("timer1");
+      }, 0);
+      requestAnimationFrame(function () {
+        console.log("UI update");
+      });
+      setTimeout(function () {
+        console.log("timer2");
+      }, 0);
+      new Promise(function executor(resolve) {
+        console.log("promise 1");
+        resolve();
+        console.log("promise 2");
+      }).then(function () {
+        console.log("promise then");
+      });
+      console.log("end");
+      // UI update 和 timer1 、timer2 的输出顺序不确定
+      // promise 1 -> promise 2 -> end -> promise then -> timer1 -> timer2 -> UI update
+      // requestAnimationFrame 0.2 ~ 0.3 ms (大约1帧的时间)
+      // setTimeout 1 ~ 3 ms (setTimeout 第二个参数传入 0 情况下)
+      //       根据运⾏结果得知，setTimeout(fn,0)的执⾏频率是每秒执⾏200次左右，所以他的间隔是5毫秒左右。
+      // 由于这两个异步的宏任务出发时机和执⾏频率不同，会导致三个宏任务的触发结果不同，如果我们打开⽹⻚时，恰
+      // 好赶上5毫秒内执⾏了⽹⻚的重绘事件，requestAnimationFrame在⼯作线程中就会到达触发时机优先进⼊任务队
+      // 列，所以此时会输出：UI update->timer1->timer2。
+      // ⽽当打开⽹⻚时上⼀次的重绘刚结束，下⼀次重绘的触发是16毫秒后，此时setTimeout注册的两个任务在⼯作线
+      // 程中就会优先到达触发时机，这时输出的结果是:timer1->timer2->UI update。
+    </script>
+  </body>
+</html>

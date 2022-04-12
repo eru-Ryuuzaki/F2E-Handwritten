@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      Promise;
+      //   axios.get("./index.html").then((res) => {
+      //     console.log("这里是 ajax 请求回来的数据:", res);
+      //   });
+      new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        xhr.open("get", "./index.html");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log("ajax");
+            resolve("这里是 ajax 请求回来的数据");
+          }
+        };
+        xhr.send();
+      }).then((res) => {
+        console.log(res);
+      });
+      Promise.resolve("promise 的数据").then((res) => {
+        console.log(res);
+      });
+      console.log("这是同步任务");
+    </script>
+  </body>
+</html>

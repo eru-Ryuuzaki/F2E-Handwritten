@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let timer1 = new Date();
+      printFPSTime = () => {
+        let tmp = new Date();
+        console.log(tmp - timer1, 1);
+        timer1 = tmp;
+        requestAnimationFrame(printFPSTime);
+      };
+      printFPSTime();
+      let timer2 = new Date();
+      printSetTimeout = () => {
+        let tmp = new Date();
+        console.log(tmp - timer2, 2);
+        timer2 = tmp;
+        setTimeout(() => {
+          printSetTimeout();
+        }, 0);
+      };
+      printSetTimeout();
+      // requestAnimationFrame 一般 10 几 ms 输出一次 也就是 60 fps 左右
+      // setTimeout 一般几 ms 输出一次
+    </script>
+  </body>
+</html>
